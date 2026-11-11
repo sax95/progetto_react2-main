@@ -1,16 +1,54 @@
-# React + Vite
+# Generatore di Consigli
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Piccola applicazione React (creata con Vite) per raccogliere consigli e mostrarne uno a caso.
 
-Currently, two official plugins are available:
+## Funzionalità
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Aggiungi consigli**: scrivi un consiglio nel campo e premi "Aggiungi". I duplicati vengono ignorati.
+- **Elenco**: il pannello mostra i primi 5 consigli della lista.
+- **Genera consiglio**: estrae un consiglio casuale e lo mostra in evidenza.
+- **Visualizzazioni**: un contatore tiene traccia di quante estrazioni sono state fatte.
+- **Elimina**: rimuove dalla lista il consiglio mostrato.
 
-## React Compiler
+## Concetti React utilizzati
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Context API** (`AdviceContext`) per condividere stato e funzioni tra i componenti.
+- **Hook**: `useState`, `useEffect`, `useContext`, `useRef`.
+- **Higher-Order Component** (`withAdviceLimit`) per limitare il numero di consigli mostrati.
+- **Componente di layout** (`Layout`) che usa `children`.
+- **Form controllato** per l'inserimento dei consigli.
 
-## Expanding the ESLint configuration
+## Struttura del progetto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/
+├── App.jsx                    # Componente principale
+├── App.css                    # Stili dell'applicazione
+├── main.jsx                   # Punto di avvio
+├── context/
+│   └── AdviceContext.jsx      # Stato condiviso e azioni
+└── components/
+    ├── Layout.jsx             # Griglia a due colonne
+    ├── AdvicePanel.jsx        # Form e lista dei consigli
+    ├── AdviceViewer.jsx       # Consiglio estratto, contatore ed eliminazione
+    └── withAdviceLimit.jsx    # HOC che limita la lista
+```
+
+## Avvio
+
+Serve [Node.js](https://nodejs.org/) installato.
+
+```bash
+npm install      # installa le dipendenze
+npm run dev      # avvia il server di sviluppo
+```
+
+Poi apri nel browser l'indirizzo indicato nel terminale (di solito http://localhost:5173).
+
+## Altri comandi
+
+```bash
+npm run build    # crea la versione di produzione nella cartella dist
+npm run preview  # mostra in anteprima la build di produzione
+npm run lint     # controlla il codice con ESLint
+```
