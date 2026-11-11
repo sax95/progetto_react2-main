@@ -1,0 +1,333 @@
+/* Palette centralizzata: cambiando questi valori si aggiorna l'intero tema. */
+:root {
+    --bg: #f6f1e9;
+    --surface: #fffdf9;
+    --surface-2: #f3ece1;
+    --ink: #1f1a17;
+    --ink-soft: #6b5f55;
+    --line: #e6dccd;
+    --accent: #e8572a;
+    --accent-dark: #c4421a;
+    --accent-soft: rgba(232, 87, 42, .14);
+    --danger: #b42318;
+    --radius: 18px;
+    --shadow: 0 1px 2px rgba(31, 26, 23, .06), 0 12px 32px rgba(31, 26, 23, .08);
+}
+
+/* Reset leggero: rende prevedibili dimensioni e spaziature degli elementi. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Sfondo caldo e tipografia comuni a tutta l'applicazione. */
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 90% 0%, rgba(232, 87, 42, .10), transparent 35%),
+        radial-gradient(circle at 0% 100%, rgba(242, 177, 52, .12), transparent 40%),
+        var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* Rimuove i vincoli del template Vite per usare tutta la larghezza disponibile. */
+#root {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    border: 0;
+    text-align: left;
+}
+
+/* Disposizione a due colonne: la lista è più stretta, il consiglio ha più spazio. */
+.dashboard {
+    width: min(1180px, calc(100% - 40px));
+    margin: 56px auto;
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: 28px;
+    align-items: start;
+}
+
+/* Stile condiviso dei due riquadri principali: card chiare con ombra morbida. */
+.panel,
+.viewer {
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* Il pannello del consiglio resta visibile mentre si scorre la lista. */
+.viewer {
+    position: sticky;
+    top: 24px;
+}
+
+/* Titoli con una piccola barra colorata a sinistra. */
+h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    color: var(--ink);
+    font-size: 1.45rem;
+    font-weight: 750;
+    letter-spacing: -.02em;
+}
+
+h2::before {
+    content: "";
+    width: 6px;
+    height: 1.2em;
+    border-radius: 3px;
+    background: var(--accent);
+}
+
+/* Form orizzontale: campo elastico e pulsante allineati. */
+form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    min-width: 0;
+    flex: 1;
+    padding: 13px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    outline: none;
+    background: var(--surface-2);
+    color: var(--ink);
+    font: inherit;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+input::placeholder {
+    color: var(--ink-soft);
+}
+
+input:focus {
+    /* Bordo e alone arancione evidenziano il campo selezionato. */
+    border-color: var(--accent);
+    background: var(--surface);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* Pulsanti: feedback leggero al passaggio del mouse. */
+button {
+    border: 0;
+    cursor: pointer;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    transition: transform .15s, background .2s, box-shadow .2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button:focus-visible {
+    outline: 3px solid var(--accent-soft);
+    outline-offset: 2px;
+}
+
+/* Pulsante per aggiungere consigli: scuro, per contrastare con l'accento. */
+form button {
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: var(--ink);
+}
+
+form button:hover {
+    background: #3a312b;
+}
+
+/* Singola voce dell'elenco: numerata automaticamente via CSS. */
+.panel {
+    counter-reset: advice;
+}
+
+.advice-item {
+    counter-increment: advice;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-top: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--ink);
+    line-height: 1.5;
+    transition: border-color .2s, transform .2s, background .2s;
+}
+
+.advice-item::before {
+    content: counter(advice, decimal-leading-zero);
+    flex-shrink: 0;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.advice-item:hover {
+    transform: translateX(4px);
+    border-color: var(--accent);
+    background: var(--surface-2);
+}
+
+/* Azione principale per estrarre un consiglio. */
+.btn-main {
+    width: 100%;
+    margin-bottom: 18px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    background: var(--accent);
+    box-shadow: 0 8px 20px rgba(232, 87, 42, .28);
+    font-size: 1.05rem;
+}
+
+.btn-main:hover {
+    background: var(--accent-dark);
+    box-shadow: 0 10px 24px rgba(232, 87, 42, .34);
+}
+
+/* Contatore delle visualizzazioni: piccola etichetta a pillola. */
+.viewer h3 {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+/* Riquadro in evidenza che contiene il consiglio estratto. */
+.advice-box {
+    position: relative;
+    overflow: hidden;
+    margin: 20px 0;
+    padding: 40px 32px 36px;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: #fff8f0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.45rem;
+    font-style: italic;
+    line-height: 1.5;
+    text-align: center;
+    box-shadow: 0 16px 36px rgba(31, 26, 23, .22);
+    animation: advice-arrives .4s cubic-bezier(.2, .8, .2, 1);
+}
+
+/* Virgolette decorative grandi sullo sfondo del riquadro. */
+.advice-box::before {
+    content: "\201C";
+    position: absolute;
+    top: -28px;
+    left: 18px;
+    color: var(--accent);
+    font-size: 8rem;
+    font-style: normal;
+    line-height: 1;
+    opacity: .9;
+}
+
+/* Etichetta sotto il testo del consiglio. */
+.advice-box::after {
+    content: "IL TUO PROSSIMO PASSO";
+    display: block;
+    margin-top: 18px;
+    color: #f2b134;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: .7rem;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: .16em;
+}
+
+/* Azione distruttiva: contorno rosso, si riempie al passaggio del mouse. */
+.remove {
+    width: 100%;
+    padding: 13px 20px;
+    border: 1.5px solid var(--danger);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--danger);
+}
+
+.remove:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* Entrata animata quando viene mostrato un nuovo consiglio. */
+@keyframes advice-arrives {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Rispetta chi ha disattivato le animazioni nel sistema operativo. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Su schermi medi impila i pannelli. */
+@media (max-width: 760px) {
+    .dashboard {
+        width: min(560px, calc(100% - 28px));
+        margin: 24px auto;
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .viewer {
+        position: static;
+    }
+
+    .panel,
+    .viewer {
+        padding: 24px;
+    }
+}
+
+/* Su telefoni stretti: form verticale e riquadro più compatto. */
+@media (max-width: 420px) {
+    form {
+        flex-direction: column;
+    }
+
+    form button {
+        padding: 13px;
+    }
+
+    .advice-box {
+        padding: 34px 20px 28px;
+        font-size: 1.2rem;
+    }
+}
